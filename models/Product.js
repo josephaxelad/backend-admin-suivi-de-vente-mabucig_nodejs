@@ -6,6 +6,7 @@ const productSchema = mongoose.Schema({
   sku: { type: String, required: true, unique : 'le Produit, {VALUE} existe déja.', sparse:true },
   price: { type: Number , required: true,min : 0 },
   numberByPack: { type: Number , required: true,min : 0,default : 0 },
+  cartridge: { type: Number , required: true,min : 0,default : 0 },
   picture: { type: String , required: true },
   idMark : { type :  Schema.ObjectId, required: true},
   idCodeQr : {type : String, required: false},

@@ -7,7 +7,7 @@ const adminAuth = require('../middleware/adminAuth');
 
 router.delete('/delete/:id', adminAuth.roles(['superadmin','root']), markCtrl.delete);
 router.get('/getOne/:id', adminAuth.roles(['superadmin','root']), markCtrl.getOne);
-router.get('/getAll', adminAuth.roles(['superadmin','root']),markCtrl.getAll);
+router.get('/getAll', adminAuth.roles(['admin','superadmin','root']),markCtrl.getAll);
 router.post('/create/', adminAuth.roles(['superadmin','root']),  markCtrl.create);
 router.put('/modify/', adminAuth.roles(['superadmin','root']), markCtrl.modify);
 

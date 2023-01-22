@@ -69,13 +69,13 @@ exports.modifyPassword =  (req, res, next) => {
                     console.log(error)
                 }
                 if (result) {
-                    (async () => {
+                    (async ()  => {
                         await bcrypt.hash(req.body.newPassword, 10, function(error, hash){
                             if (error) {
                                 res.status(500).json({ error });
                                 console.log(error)
                             }
-                            Admin.updateOne({ _id: req.params.id }, { $set : {password : hash} })
+                            Admin.updateOne({ _id: id }, { $set : {password : hash} })
                             .then(() => res.status(200).json({ message: "Mot de passe modifié avec succès !"}))
                             .catch(error => res.status(400).json({ error }));
                         });
@@ -156,7 +156,7 @@ exports.delete = (req, res, next) => {
 }
 
 exports.deleteHard = (req, res, next) => {
-    Admin.findOne({ _id: req.params.id,isDisabled : false,$not: {role : 'superadmin'} },{password : 0})
+    Admin.findOne({ _id: req.params.id,isDisabled : false,role : {$ne : 'superadmin'} },{password : 0})
     .then(thing => {
         Admin.deleteOne({ _id: req.params.id })
         .then(() => res.status(200).json({ message: "L'administrateur a été supprimé avec succès !"}))
@@ -185,13 +185,13 @@ exports.getMe = (req, res, next) => {
 }
 
 exports.getAll =  (req, res, next) => {
-    Admin.find({ isDisabled : false},{password : 0})
+    Admin.find({ isDisabled : false, role :{ $ne: 'root'}},{password : 0})
     .then(things => res.status(200).json(things))
     .catch(error => res.status(400).json({ error }));
 }
 
 exports.getVeryAll =  (req, res, next) => {
-    Admin.find({},{password : 0})
+    Admin.find({ role :{ $ne: 'root'}},{password : 0})
     .then(things => res.status(200).json(things))
     .catch(error => res.status(400).json({ error }));
 }
